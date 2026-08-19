@@ -1,0 +1,113 @@
+Index: main.c
+--- main.c.orig
++++ main.c
+@@ -36,6 +36,7 @@
+ #include <signal.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <syslog.h>
+ 
+ #define OPTPARSE_IMPLEMENTATION
+ #include "optparse.h"
+@@ -93,22 +94,22 @@ struct Numeric *restrict boot_nanos;
+ struct Config *restrict cnf;
+ struct String *restrict process_id;
+ bool ticker_exporter;
++bool daemonize;
++bool daemonized;
+ bool verbose;
+ 
+ struct Array *restrict exchanges;
+ struct Array *restrict algorithms;
+ struct Array *restrict volatility_windows;
+ 
+-extern bool proc_prefix_systemd;
+-
+ int abagnale(int argc, char *argv[]);
+ int abagnalectl(int argc, char *argv[]);
+ 
+ static void terminate(int signum) { terminated = true; }
+ 
+ static _Noreturn void usage(void) {
+-  werr("Usage: %s [-Dmacro=value ... ] [-f config-file] [-I entity] [-i "
+-       "process-uuid] [-n] [-p plots-dir] [-v]\n",
++  werr("Usage: %s [-Dmacro=value ... ] [-d] [-f config-file] [-I entity] "
++       "[-i process-uuid] [-n] [-p plots-dir] [-v]\n",
+        String_chars(progname));
+ 
+   exit(EXIT_FAILURE);
+@@ -119,6 +120,8 @@ int main(int argc, char *argv[]) {
+   char *plotsdir = NULL;
+   ticker_exporter = true;
+   verbose = false;
++  daemonize = true;
++  daemonized = false;
+   struct timespec ts;
+   struct optparse options = {0};
+   void *const *restrict items;
+@@ -161,12 +164,15 @@ int main(int argc, char *argv[]) {
+   optparse_init(&options, argv);
+   options.permute = 0;
+ 
+-  while ((c = optparse(&options, "D:f:I:i:p:vn")) != -1) {
++  while ((c = optparse(&options, "Dd:df:I:i:p:vn")) != -1) {
+     switch (c) {
+     case 'D':
+       if (config_symset(options.optarg) < 0)
+         usage();
+       break;
++    case 'd':
++      daemonize = false;
++      break;
+     case 'f':
+       conffile = options.optarg;
+       break;
+@@ -199,11 +205,6 @@ int main(int argc, char *argv[]) {
+ 
+   argv += options.optind;
+ 
+-  if (verbose) {
+-    wout("%s\n", ABAG_REVISION);
+-    wout("\tABAG_CONFIG_FILE=%s\n", conffile);
+-  }
+-
+   prog_abagnale = String_cnew(ABAGNALE);
+   prog_abagnalectl = String_cnew(ABAGNALECTL);
+   zero = Numeric_from_int(0);
+@@ -252,6 +253,16 @@ int main(int argc, char *argv[]) {
+ 
+   Array_compact(volatility_windows);
+ 
++  daemonized = daemonize && String_equals(progname, prog_abagnale);
++
++  if (daemonized)
++    openlog(String_chars(progname), LOG_PID, verbose ? LOG_INFO : LOG_ERR);
++
++  if (verbose) {
++    wout("%s\n", ABAG_REVISION);
++    wout("\tABAG_CONFIG_FILE=%s\n", conffile);
++  }
++
+   http_init();
+   json_init();
+   abagnale_init();
+@@ -308,7 +319,8 @@ int main(int argc, char *argv[]) {
+ 
+   if (!configtest) {
+     if (String_equals(progname, prog_abagnale)) {
+-      proc_prefix_systemd = true;
++      if (daemonized && daemon(0, 0) == -1)
++        fatal("%s", strerror(errno));
+       r = abagnale(argc - options.optind, argv);
+     } else if (String_equals(progname, prog_abagnalectl)) {
+       r = abagnalectl(argc - options.optind, argv);
+@@ -330,6 +342,9 @@ int main(int argc, char *argv[]) {
+   time_destroy();
+   string_destroy();
+   proc_destroy();
++
++  if (daemonized)
++    closelog();
+ 
+   Array_delete(algorithms, NULL);
+   Array_delete(exchanges, NULL);

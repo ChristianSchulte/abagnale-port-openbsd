@@ -1,0 +1,27 @@
++-------------------------------------------------------------------------------
+| Running ${PKGSTEM} on OpenBSD
++-------------------------------------------------------------------------------
+
+The port creates a user _abagnale with home directory /var/abagnale. Maintenance
+should be done by switching to that user.
+
+Preparing the database
+======================
+
+The database schema will transfer all ownership to the abagnale database role.
+That role must be created before creating the database.
+
+	# su - _postgresql
+	$ psql -U postgresql
+		CREATE ROLE abagnale;
+
+Create the database by loading the SQL dump:
+
+  # su - _postgresql
+  $ psql -U postgresql -f /usr/local/share/abagnale/database-postgresql.sql
+
+The service then can be enabled and started by issueing:
+
+# rcctl enable ${PKGSTEM}
+# rcctl start ${PKGSTEM}
+

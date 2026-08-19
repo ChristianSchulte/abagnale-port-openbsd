@@ -1,0 +1,51 @@
+Index: proc.c
+--- proc.c.orig
++++ proc.c
+@@ -35,20 +35,23 @@ mtx_t stderr_mtx;
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
++#include <syslog.h>
+ 
+-bool proc_prefix_systemd = false;
++extern const bool daemonized;
+ 
+ inline void wout(const char *restrict fmt, ...) {
+   va_list ap;
+ #ifdef MULTI_THREADED
+   mutex_lock(&stdout_mtx);
+ #endif
+-  if (proc_prefix_systemd)
+-    (void)fprintf(stdout, "<6>");
+   va_start(ap, fmt);
+-  (void)vfprintf(stdout, fmt, ap);
++  if (daemonized)
++    vsyslog(LOG_DAEMON | LOG_INFO, fmt, ap);
++  else {
++    (void)vfprintf(stdout, fmt, ap);
++    (void)fflush(stdout);
++  }
+   va_end(ap);
+-  (void)fflush(stdout);
+ #ifdef MULTI_THREADED
+   mutex_unlock(&stdout_mtx);
+ #endif
+@@ -59,12 +62,14 @@ inline void werr(const char *restrict fmt, ...) {
+ #ifdef MULTI_THREADED
+   mutex_lock(&stderr_mtx);
+ #endif
+-  if (proc_prefix_systemd)
+-    (void)fprintf(stderr, "<3>");
+   va_start(ap, fmt);
+-  (void)vfprintf(stderr, fmt, ap);
++  if (daemonized)
++    vsyslog(LOG_DAEMON | LOG_ERR, fmt, ap);
++  else {
++    (void)vfprintf(stderr, fmt, ap);
++    (void)fflush(stderr);
++  }
+   va_end(ap);
+-  (void)fflush(stderr);
+ #ifdef MULTI_THREADED
+   mutex_unlock(&stderr_mtx);
+ #endif

@@ -1,0 +1,38 @@
+Index: Makefile
+--- Makefile.orig
++++ Makefile
+@@ -87,7 +87,7 @@ PROFILE=
+ LTO=
+ LTO+=-flto=auto
+ 
+-STANDARD=-std=c2x
++STANDARD=-std=c23
+ 
+ WARNINGS=-Wall
+ WARNINGS+=-Werror
+@@ -102,6 +102,7 @@ WARNINGS+=-Wformat-truncation
+ WARNINGS+=-Wuninitialized
+ WARNINGS+=-Wshadow
+ #WARNINGS+=-Wcast-qual
++WARNINGS+=-Wno-keyword-macro
+ 
+ CFLAGS=$(INCLUDES) $(DEBUG) $(PROFILE) $(LTO) $(CONFIG) $(WARNINGS)
+ CFLAGS+=-DMULTI_THREADED
+@@ -136,6 +137,8 @@ CFLAGS+=-DWCHAR_T_UTF32
+ #CFLAGS+=-DWCHAR_T_UTF8
+ CFLAGS+=-pedantic
+ CFLAGS+=-O3
++CFLAGS+=-march=native
++CFLAGS+=-mtune=native
+ 
+ LDFLAGS=$(DEBUG) $(PROFILE) $(LTO)
+ LDFLAGS+=-L/usr/local/lib
+@@ -149,7 +152,7 @@ LDFLAGS+=-lecpg
+ LDFLAGS+=-lpgtypes
+ 
+ LDFLAGS+=-lm
+-#LDFLAGS+=-lstdthreads
++LDFLAGS+=-lstdthreads
+ #LDFLAGS+=-lpthread
+ 
+ YACCFLAGS=
