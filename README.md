@@ -7,13 +7,15 @@ version this repository can be checked out to a subdirectory like:
 user@host:/usr/ports$ mkdir localhost
 user@host:/usr/ports$ cd localhost
 user@host:/usr/ports/localhost$ git clone https://github.com/ChristianSchulte/abagnale-port-openbsd.git abagnale
+user@host:/usr/ports/localhost$ cd abagnale
+user@host:/usr/ports/localhost/abagnale$ make install FETCH_PACKAGES=
 ```
 
-The port then can be updated or installed by issueing:
+The port then can be updated by issueing:
 
 ```console
+user@host:/usr/ports/localhost/abagnale$ make clean=all
 user@host:/usr/ports/localhost/abagnale$ git pull
-user@host:/usr/ports/localhost/abagnale$ make install FETCH_PACKAGES=
 user@host:/usr/ports/localhost/abagnale$ make update FETCH_PACKAGES=
 ```
 

@@ -52,7 +52,8 @@ the SAMPLES table. The -i command line option needs to be set to a UUID used
 to separate state of different processes in the database.
 
 	# doas -u _abagnale sh
-  $ echo "SELECT gen_random_uuid();" | psql -h database.fqdn -U abagnale ABAGNALE
+	$ echo "SELECT gen_random_uuid();" \
+		| psql -h database.fqdn -U abagnale ABAGNALE
 
 Example
 =======
@@ -125,7 +126,7 @@ to trade everything Euro at the Bitvavo exchange.
   # rcctl restart abagnale
 
 Performing database maintenance the abagnalectl maintenance application should
-read a unified configuration containing every market setups.
+read a unified configuration containing all market setups.
 
 	$ cat /etc/abagnale/abagnalectl.conf
 	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale

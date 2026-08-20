@@ -1,7 +1,7 @@
 COMMENT	=	algorithmic trading system
 
 V	=	0.9692
-REVISION	=	0
+REVISION	=	1
 PKGNAME	=	abagnale-${V}
 CATEGORIES	= localhost
 DIST_TUPLE	+=	github jDTAUS Abagnale v0/9692 .
