@@ -40,3 +40,106 @@ vacuum a script like the following may be added to /etc/daily.local.
 	su _postgresql -c "mkdir -p $ABAGNALE_BACKUPDIR"
 	su _abagnale -c "abagnalectl vacuum -a -b $ABAGNALE_BACKUPDIR"
 
+Scaling
+=======
+
+The application can be distributed accross multiple machines in case a single
+machine is too limited to handle a given amount of markets for given window
+sizes. The command line option -I can be used to flag an application process
+a so called ticker importer. By starting the abagnale application with the
+command line option -I SAMPLES the process will not insert any tickers into
+the SAMPLES table. The -i command line option needs to be set to a UUID used
+to separate state of different processes in the database.
+
+	# doas -u _abagnale sh
+  $ echo "SELECT gen_random_uuid();" | psql -h database.fqdn -U abagnale ABAGNALE
+
+Example
+=======
+
+Process A: Does not perform any trading and is just used to populate the
+SAMPLES table with tickers. It's abagnale.conf configuration therefore
+only contains exchange configurations with no trade statements.
+
+	$ cat /etc/abagnale/abagnale.conf
+	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
+	dns-v4 udp://127.0.0.1:53
+	dns-v6 udp://::1:53
+	dns-timeout 3s
+	exchange coinbase cdp-api-key /etc/abagnale/cdp_api_key.json
+	exchange bitvavo api-key 9b1...
+	exchange bitvavo api-secret 313...
+
+Process B: Only reads tickers from the database and the exchange and is setup
+to trade everything Bitcoin at the Coinbase exchange.
+
+  $ cat /etc/abagnale/abagnale.conf
+	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
+	dns-v4 udp://127.0.0.1:53
+	dns-v6 udp://::1:53
+	dns-timeout 3s
+	exchange coinbase cdp-api-key /etc/abagnale/cdp_api_key.json
+
+  include /etc/abagnale/abagnale-coinbase-btc.conf
+
+  $ cat /etc/abagnale/abagnale-coinbase-btc.conf
+	trade at coinbase using trend return 0.0005 BTC window 36h\
+		market match @BTC\
+		demand-timeout-min 1h demand-timeout-max 1.5h\
+		supply-timeout-min 1h supply-timeout-max 1.5h\
+		stop-loss-delay 15m stop-loss-delays 2\
+		take-profit-delay 3m take-profit-delays 1\
+		take-loss-delay 18h take-loss-delays 1
+
+	# rcctl set abagnale flags \
+		"-v -p /var/abagnale/plots \
+			-I SAMPLES -i 98430c6b-4cf0-46c5-8d02-41dd7e93a481"
+
+  # rcctl restart abagnale
+
+Process C: Only reads tickers from the database and the exchange and is setup
+to trade everything Euro at the Bitvavo exchange.
+
+  $ cat /etc/abagnale/abagnale.conf
+	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
+	dns-v4 udp://127.0.0.1:53
+	dns-v6 udp://::1:53
+	dns-timeout 3s
+	exchange bitvavo api-key 9b1... api-secret 313...
+
+  include /etc/abagnale/abagnale-bitvavo-eur.conf
+
+  $ cat /etc/abagnale/abagnale-bitvavo-eur.conf
+	trade at bitvavo using trend return 0.25 EUR window 36h\
+		market match @EUR\
+		demand-timeout-min 1h demand-timeout-max 1.5h\
+		supply-timeout-min 1h supply-timeout-max 1.5h\
+		stop-loss-delay 15m stop-loss-delays 2\
+		take-profit-delay 3m take-profit-delays 1\
+		take-loss-delay 18h take-loss-delays 1
+
+	# rcctl set abagnale flags \
+		"-v -p /var/abagnale/plots \
+			-I SAMPLES -i de6924a0-1a23-4680-8780-175d0e345f75"
+
+  # rcctl restart abagnale
+
+Performing database maintenance the abagnalectl maintenance application should
+read a unified configuration containing every market setups.
+
+	$ cat /etc/abagnale/abagnalectl.conf
+	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
+	dns-v4 udp://127.0.0.1:53
+	dns-v6 udp://::1:53
+	dns-timeout 3s
+	exchange coinbase cdp-api-key /etc/abagnale/cdp_api_key.json
+	exchange bitvavo api-key 9b1...
+	exchange bitvavo api-secret 313...
+
+	include /etc/abagnale/abagnale-coinbase-btc.conf
+	include /etc/abagnale/abagnale-bitvavo-eur.conf
+
+	# abagnalectl -f /etc/abagnale/abagnalectl.conf -a
+
+To maintain all configuration at a central place the /etc/abagnale directory
+may be exported using NFS for example.
