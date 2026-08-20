@@ -17,8 +17,8 @@ That role must be created before creating the database.
 
 Create the database by loading the SQL dump:
 
-  # su - _postgresql
-  $ psql -U postgres -f /usr/local/share/abagnale/database-postgresql.sql
+	# su - _postgresql
+	$ psql -U postgres -f /usr/local/share/abagnale/database-postgresql.sql
 
 The service then can be enabled and started by issueing:
 
@@ -32,11 +32,11 @@ The database should be vacuumed periodically by running abagnalectl vacuum.
 To vacuum the database and to create backups of outdated data removed by
 vacuum a script like the following may be added to /etc/daily.local.
 
-  #!/bin/sh
-  ABAGNALE_BACKUPDIR=/var/postgresql/abagnale/vacuum/$(date +%F)
+	#!/bin/sh
+	ABAGNALE_BACKUPDIR=/var/postgresql/abagnale/vacuum/$(date +%F)
 
-  next_part "Performing abagnalectl vacuum"
+	next_part "Performing abagnalectl vacuum"
 
 	su _postgresql -c "mkdir -p $ABAGNALE_BACKUPDIR"
-  su _abagnale -c "abagnalectl vacuum -a -b $ABAGNALE_BACKUPDIR"
+	su _abagnale -c "abagnalectl vacuum -a -b $ABAGNALE_BACKUPDIR"
 
