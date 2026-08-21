@@ -140,7 +140,7 @@ read a unified configuration containing all market setups.
 	include /etc/abagnale/abagnale-coinbase-btc.conf
 	include /etc/abagnale/abagnale-bitvavo-eur.conf
 
-	# abagnalectl -f /etc/abagnale/abagnalectl.conf -a
+	# abagnalectl -f /etc/abagnale/abagnalectl.conf vacuum -a \
+		-b /var/postgresql/abagnale/vacuum/$(date +%F)
 
-To maintain all configuration at a central place the /etc/abagnale directory
-may be exported using NFS for example.
+Consider sharing the /etc/abagnale and /var/abagnale directories using NFS.
