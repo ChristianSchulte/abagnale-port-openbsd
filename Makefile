@@ -1,7 +1,7 @@
 COMMENT	=	algorithmic trading system
 
 V	=	0.9693
-REVISION	=	1
+REVISION	=	2
 PKGNAME	=	abagnale-${V}
 CATEGORIES	= localhost
 DIST_TUPLE	+=	github jDTAUS Abagnale v0/9693 .
@@ -21,7 +21,8 @@ LIB_DEPENDS	=	databases/postgresql devel/libstdthreads
 #TEST_FLAGS =		???
 
 BUILD_DATE	!=	date -u +%Y-%m-%dT%H:%M:%SZ
-SUBST_VARS	=	OSREV BUILD_DATE
+BUILD_HOST	!=	hostname
+SUBST_VARS	=	OSREV BUILD_DATE BUILD_HOST
 
 pre-configure:
 	${SUBST_CMD} ${WRKSRC}/version.h
