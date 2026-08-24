@@ -39,6 +39,9 @@ vacuum a script like the following may be added to /etc/daily.local.
 
 	su _postgresql -c "mkdir -p $ABAGNALE_BACKUPDIR"
 	su _abagnale -c "abagnalectl vacuum -a -b $ABAGNALE_BACKUPDIR"
+	# su _abagnale -c "abagnalectl -f /etc/abagnale/abagnalectl.conf \
+	#	vacuum -a -b $ABAGNALE_BACKUPDIR"
+		
 
 Scaling
 =======
@@ -58,12 +61,13 @@ to separate state of different processes in the database.
 Example
 =======
 
-Process A: Does not perform any trading and is just used to populate the
-SAMPLES table with tickers. It's abagnale.conf configuration therefore
-only contains exchange configurations with no trade statements.
+Database Host: Does not perform any trading and is just used to populate the
+SAMPLES table with tickers. It's abagnale.conf configuration therefore only
+contains exchange configurations with no trade statements. This host also runs
+the daily maintenance. Without specifying an -i command line option the
+process uses a hard coded default process UUID.
 
 	$ cat /etc/abagnale/abagnale.conf
-	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
 	dns-v4 udp://127.0.0.1:53
 	dns-v6 udp://::1:53
 	dns-timeout 3s
@@ -71,8 +75,9 @@ only contains exchange configurations with no trade statements.
 	exchange bitvavo api-key 9b1...
 	exchange bitvavo api-secret 313...
 
-Process B: Only reads tickers from the database and the exchange and is setup
-to trade everything Bitcoin at the Coinbase exchange.
+Trading Host A: Initializes with tickers from the database. Reads tickers from
+the Coinbase exchange. Does not write tickers to the database. Trades
+everything Bitcoin at the Coinbase exchange.
 
 	$ cat /etc/abagnale/abagnale.conf
 	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
@@ -98,8 +103,9 @@ to trade everything Bitcoin at the Coinbase exchange.
 
 	# rcctl restart abagnale
 
-Process C: Only reads tickers from the database and the exchange and is setup
-to trade everything Euro at the Bitvavo exchange.
+Trading Host B: Initializes with tickers from the database. Reads tickers from
+the Bitvavo exchange. Does not write tickers to the database. Trades
+everything Euro at the Bitvavo exchange.
 
 	$ cat /etc/abagnale/abagnale.conf
 	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
@@ -125,11 +131,10 @@ to trade everything Euro at the Bitvavo exchange.
 
 	# rcctl restart abagnale
 
-Performing database maintenance the abagnalectl maintenance application should
-read a unified configuration containing all market setups.
+Performing database maintenance the abagnalectl maintenance application needs
+to read a unified configuration containing all market setups.
 
 	$ cat /etc/abagnale/abagnalectl.conf
-	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
 	dns-v4 udp://127.0.0.1:53
 	dns-v6 udp://::1:53
 	dns-timeout 3s
