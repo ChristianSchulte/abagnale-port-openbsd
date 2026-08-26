@@ -1,7 +1,7 @@
 @bin bin/abagnale
 @bin bin/abagnalectl
-@newgroup _abagnale:906
-@newuser _abagnale:906:_abagnale::Abagnale Manager:/var/abagnale:/bin/sh
+@newgroup _abagnale:9006
+@newuser _abagnale:9006:_abagnale::Abagnale Manager:/var/abagnale:/bin/sh
 @rcscript ${RCDIR}/abagnale
 share/abagnale/abagnale.demo
 share/abagnale/database-postgresql.sql
