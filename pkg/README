@@ -13,8 +13,8 @@ That role must be created before creating the database.
 
 	# su - _postgresql
 	$ echo "CREATE ROLE abagnale;" | psql -U postgres
-	$ echo "GRANT pg_write_server_files TO abagnale INHERIT TRUE;" \
-		| psql -U postgres
+	$ echo "GRANT pg_write_server_files TO abagnale \
+		INHERIT FALSE, SET TRUE;" | psql -U postgres
 
 Create the database by loading the SQL dump:
 
