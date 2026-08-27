@@ -12,8 +12,9 @@ The database schema will transfer all ownership to the abagnale database role.
 That role must be created before creating the database.
 
 	# su - _postgresql
-	$ psql -U postgres
-		CREATE ROLE abagnale;
+	$ echo "CREATE ROLE abagnale;" | psql -U postgres
+	$ echo "GRANT pg_write_server_files TO abagnale INHERIT TRUE;" \
+		| psql -U postgres
 
 Create the database by loading the SQL dump:
 
