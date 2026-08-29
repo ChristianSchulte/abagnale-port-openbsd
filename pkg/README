@@ -53,11 +53,10 @@ Scaling
 
 The application can be distributed accross multiple machines in case a single
 machine is too limited to handle a given amount of markets for given window
-sizes. The command line option -I can be used to flag an application process
-a so called ticker importer. By starting the abagnale application with the
-command line option -I SAMPLES the process will not insert any tickers into
-the SAMPLES table. The -i command line option needs to be set to a UUID used
-to separate state of different processes in the database.
+sizes. By starting the application with the command line option -I SAMPLES it
+will not insert any tickers into the SAMPLES table. The -i command line option
+needs to be set to a UUID used to separate state of different processes in the
+database.
 
 	# doas -u _abagnale sh
 	$ echo "SELECT gen_random_uuid();" \
@@ -67,10 +66,10 @@ Example
 =======
 
 Database Host: Does not perform any trading and is just used to populate the
-SAMPLES table with tickers. It's abagnale.conf configuration therefore only
-contains exchange configurations with no trade statements. This host also runs
-the daily maintenance. Without specifying an -i command line option the
-process uses a hard coded default process UUID.
+SAMPLES table with tickers. It's configuration therefore only contains exchange
+configurations with no trade statements. This host also runs the daily
+maintenance. Without specifying an -i command line option the process uses a
+hard coded default process UUID.
 
 	$ cat /etc/abagnale/abagnale.conf
 	dns-v4 udp://127.0.0.1:53
@@ -96,8 +95,8 @@ everything Bitcoin at the Coinbase exchange.
 	$ cat /etc/abagnale/abagnale-coinbase-btc.conf
 	trade at coinbase using trend return 0.0005 BTC window 36h\
 		market match @BTC\
-		demand-timeout-min 1h demand-timeout-max 1.5h\
-		supply-timeout-min 1h supply-timeout-max 1.5h\
+		demand-timeout-min 1h demand-timeout-max 9h\
+		supply-timeout-min 1h supply-timeout-max 9h\
 		stop-loss-delay 15m stop-loss-delays 2\
 		take-profit-delay 3m take-profit-delays 1\
 		take-loss-delay 18h take-loss-delays 1
@@ -124,8 +123,8 @@ everything Euro at the Bitvavo exchange.
 	$ cat /etc/abagnale/abagnale-bitvavo-eur.conf
 	trade at bitvavo using trend return 0.25 EUR window 36h\
 		market match @EUR\
-		demand-timeout-min 1h demand-timeout-max 1.5h\
-		supply-timeout-min 1h supply-timeout-max 1.5h\
+		demand-timeout-min 1h demand-timeout-max 9h\
+		supply-timeout-min 1h supply-timeout-max 9h\
 		stop-loss-delay 15m stop-loss-delays 2\
 		take-profit-delay 3m take-profit-delays 1\
 		take-loss-delay 18h take-loss-delays 1
