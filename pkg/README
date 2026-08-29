@@ -13,8 +13,6 @@ That role must be created before creating the database.
 
 	# su - _postgresql
 	$ echo "CREATE ROLE abagnale;" | psql -U postgres
-	$ echo "GRANT pg_write_server_files TO abagnale \
-		INHERIT FALSE, SET TRUE;" | psql -U postgres
 
 Create the database by loading the SQL dump:
 
@@ -32,6 +30,13 @@ Maintenance
 The database should be vacuumed periodically by running abagnalectl vacuum.
 To vacuum the database and to create backups of outdated data removed by
 vacuum a script like the following may be added to /etc/daily.local.
+
+To be able to use the -b command option of the vacuum command of the
+abagnalectl maintenance appplication the database role used to perform that
+command needs to be granted the pg_write_server_files role.
+
+	$ echo "GRANT pg_write_server_files TO abagnale \
+		INHERIT TRUE, SET TRUE;" | psql -U postgres
 
 	#!/bin/sh
 	ABAGNALE_BACKUPDIR=/var/postgresql/abagnale/vacuum/$(date +%F)
