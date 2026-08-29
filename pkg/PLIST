@@ -3,6 +3,7 @@
 @newgroup _abagnale:9006
 @newuser _abagnale:9006:_abagnale::Abagnale Manager:/var/abagnale:/bin/sh
 @rcscript ${RCDIR}/abagnale
+etc/login.conf.d/abagnale
 @sample ${SYSCONFDIR}/login.conf.d/abagnale
 share/abagnale/abagnale.demo
 share/abagnale/database-postgresql.sql
