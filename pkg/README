@@ -31,13 +31,6 @@ The database should be vacuumed periodically by running abagnalectl vacuum.
 To vacuum the database and to create backups of outdated data removed by
 vacuum a script like the following may be added to /etc/daily.local.
 
-To be able to use the -b command option of the vacuum command of the
-abagnalectl maintenance appplication the database role used to perform that
-command needs to be granted the pg_write_server_files role.
-
-	$ echo "GRANT pg_write_server_files TO abagnale \
-		INHERIT TRUE, SET TRUE;" | psql -U postgres
-
 	#!/bin/sh
 	ABAGNALE_BACKUPDIR=/var/postgresql/abagnale/vacuum/$(date +%F)
 
@@ -47,7 +40,13 @@ command needs to be granted the pg_write_server_files role.
 	su _abagnale -c "abagnalectl vacuum -a -b $ABAGNALE_BACKUPDIR"
 	# su _abagnale -c "abagnalectl -f /etc/abagnale/abagnalectl.conf \
 	#	vacuum -a -b $ABAGNALE_BACKUPDIR"
-		
+
+To be able to use the -b command option of the vacuum command the role used
+to perform that command needs to be granted pg_write_server_files.
+
+	# su - _postgresql
+	$ echo "GRANT pg_write_server_files TO abagnale \
+		INHERIT TRUE, SET TRUE;" | psql -U postgres
 
 Scaling
 =======
