@@ -1,3 +1,4 @@
+@sample /var/abagnale/
 @bin bin/abagnale
 @bin bin/abagnalectl
 @newgroup _abagnale:9006
@@ -10,11 +11,11 @@ share/abagnale/database-postgresql.sql
 share/abagnale/INTRO.txt
 share/abagnale/README.md
 share/doc/pkg-readmes/abagnale
-@mode 0750
 @owner _abagnale
 @group _abagnale
-@sample /var/abagnale/
+@mode 0750
 share/examples/abagnale/
 @sample ${SYSCONFDIR}/abagnale/
+@mode 0640
 share/examples/abagnale/abagnale.conf
 @sample ${SYSCONFDIR}/abagnale/abagnale.conf
