@@ -16,6 +16,6 @@ share/doc/pkg-readmes/abagnale
 @mode 0750
 share/examples/abagnale/
 @sample ${SYSCONFDIR}/abagnale/
-@mode 0640
+@mode 0660
 share/examples/abagnale/abagnale.conf
 @sample ${SYSCONFDIR}/abagnale/abagnale.conf
