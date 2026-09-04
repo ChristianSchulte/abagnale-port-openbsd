@@ -62,9 +62,9 @@ Index: main.c
      case 'f':
        conffile = options.optarg;
        break;
-@@ -199,11 +205,6 @@ int main(int argc, char *argv[]) {
- 
-   argv += options.optind;
+@@ -202,11 +208,6 @@ int main(int argc, char *argv[]) {
+   if (configtest)
+     verbose = false;
  
 -  if (verbose) {
 -    wout("%s\n", ABAG_REVISION);
@@ -74,7 +74,7 @@ Index: main.c
    prog_abagnale = String_cnew(ABAGNALE);
    prog_abagnalectl = String_cnew(ABAGNALECTL);
    zero = Numeric_from_int(0);
-@@ -252,6 +253,16 @@ int main(int argc, char *argv[]) {
+@@ -255,6 +256,16 @@ int main(int argc, char *argv[]) {
  
    Array_compact(volatility_windows);
  
@@ -91,7 +91,7 @@ Index: main.c
    http_init();
    json_init();
    abagnale_init();
-@@ -308,7 +319,8 @@ int main(int argc, char *argv[]) {
+@@ -311,7 +322,8 @@ int main(int argc, char *argv[]) {
  
    if (!configtest) {
      if (String_equals(progname, prog_abagnale)) {
@@ -101,7 +101,7 @@ Index: main.c
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -330,6 +342,9 @@ int main(int argc, char *argv[]) {
+@@ -333,6 +345,9 @@ int main(int argc, char *argv[]) {
    time_destroy();
    string_destroy();
    proc_destroy();

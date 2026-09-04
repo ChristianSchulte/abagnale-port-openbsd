@@ -1,14 +1,16 @@
 COMMENT	=	algorithmic trading system
 
-V	=	0.9708
-REVISION	=	2
+V	=	0.9709
+REVISION	=	0
 PKGNAME	=	abagnale-${V}
 CATEGORIES	= localhost
-DIST_TUPLE	+=	github jDTAUS Abagnale v0/9708 .
-WRKDIST	=	${WRKDIR}/Abagnale-0-9708
+DIST_TUPLE	+=	github jDTAUS Abagnale v0/9709 .
+WRKDIST	=	${WRKDIR}/Abagnale-0-9709
 HOMEPAGE	=	https://github.com/jDTAUS/Abagnale
 MAINTAINER	=	Christian Schulte <cs@schulte.it>
 PERMIT_PACKAGE =	Yes
+
+DEBUG_PACKAGES	= ${BUILD_PACKAGES}
 
 # "make port-lib-depends-check" can help
 WANTLIB	=	c m stdthreads ecpg pgtypes
