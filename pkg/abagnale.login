@@ -1,3 +1,3 @@
 abagnale:\
-	:umask=027:\
+	:umask=0027:\
 	:tc=daemon:
