@@ -45,7 +45,7 @@ Index: main.c
    struct timespec ts;
    struct optparse options = {0};
    void *const *restrict items;
-@@ -164,12 +167,15 @@ int main(int argc, char *argv[]) {
+@@ -165,12 +168,15 @@ int main(int argc, char *argv[]) {
    optparse_init(&options, argv);
    options.permute = 0;
  
@@ -62,7 +62,7 @@ Index: main.c
      case 'f':
        conffile = options.optarg;
        break;
-@@ -205,11 +211,6 @@ int main(int argc, char *argv[]) {
+@@ -206,11 +212,6 @@ int main(int argc, char *argv[]) {
    if (configtest)
      verbose = false;
  
@@ -74,7 +74,7 @@ Index: main.c
    prog_abagnale = String_cnew(ABAGNALE);
    prog_abagnalectl = String_cnew(ABAGNALECTL);
    zero = Numeric_from_int(0);
-@@ -258,6 +259,16 @@ int main(int argc, char *argv[]) {
+@@ -259,6 +260,16 @@ int main(int argc, char *argv[]) {
  
    Array_compact(volatility_windows);
  
@@ -91,7 +91,7 @@ Index: main.c
    http_init();
    json_init();
    abagnale_init();
-@@ -314,7 +325,8 @@ int main(int argc, char *argv[]) {
+@@ -315,7 +326,8 @@ int main(int argc, char *argv[]) {
  
    if (!configtest) {
      if (String_equals(progname, prog_abagnale)) {
@@ -101,7 +101,7 @@ Index: main.c
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -336,6 +348,9 @@ int main(int argc, char *argv[]) {
+@@ -337,6 +349,9 @@ int main(int argc, char *argv[]) {
    time_destroy();
    string_destroy();
    proc_destroy();
