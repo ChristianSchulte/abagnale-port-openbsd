@@ -9,14 +9,13 @@ Index: main.c
  
  #define OPTPARSE_IMPLEMENTATION
  #include "optparse.h"
-@@ -93,22 +94,22 @@ struct Numeric *restrict boot_nanos;
- struct Config *restrict cnf;
- struct String *restrict process_id;
+@@ -95,20 +96,21 @@ struct String *restrict process_id;
  bool ticker_exporter;
-+bool daemonize;
-+bool daemonized;
  bool verbose;
  
++bool deamonize;
++bool deamonized;
++
  struct Array *restrict exchanges;
  struct Array *restrict algorithms;
  struct Array *restrict volatility_windows;
@@ -26,7 +25,7 @@ Index: main.c
  int abagnale(int argc, char *argv[]);
  int abagnalectl(int argc, char *argv[]);
  
- static void terminate(int signum) { terminated = true; }
+ static void terminate(int signum) { terminated = 1; }
  
  static _Noreturn void usage(void) {
 -  werr("Usage: %s [-Dmacro=value ... ] [-f config-file] [-I entity] [-i "
@@ -36,7 +35,7 @@ Index: main.c
         String_chars(progname));
  
    exit(EXIT_FAILURE);
-@@ -119,6 +120,8 @@ int main(int argc, char *argv[]) {
+@@ -119,6 +121,8 @@ int main(int argc, char *argv[]) {
    char *plotsdir = NULL;
    ticker_exporter = true;
    verbose = false;
@@ -45,7 +44,7 @@ Index: main.c
    struct timespec ts;
    struct optparse options = {0};
    void *const *restrict items;
-@@ -165,12 +168,15 @@ int main(int argc, char *argv[]) {
+@@ -165,12 +169,15 @@ int main(int argc, char *argv[]) {
    optparse_init(&options, argv);
    options.permute = 0;
  
@@ -62,7 +61,7 @@ Index: main.c
      case 'f':
        conffile = options.optarg;
        break;
-@@ -206,11 +212,6 @@ int main(int argc, char *argv[]) {
+@@ -206,11 +213,6 @@ int main(int argc, char *argv[]) {
    if (configtest)
      verbose = false;
  
@@ -74,7 +73,7 @@ Index: main.c
    prog_abagnale = String_cnew(ABAGNALE);
    prog_abagnalectl = String_cnew(ABAGNALECTL);
    zero = Numeric_from_int(0);
-@@ -259,6 +260,16 @@ int main(int argc, char *argv[]) {
+@@ -259,6 +261,16 @@ int main(int argc, char *argv[]) {
  
    Array_compact(volatility_windows);
  
@@ -91,7 +90,7 @@ Index: main.c
    http_init();
    json_init();
    abagnale_init();
-@@ -315,7 +326,8 @@ int main(int argc, char *argv[]) {
+@@ -315,7 +327,8 @@ int main(int argc, char *argv[]) {
  
    if (!configtest) {
      if (String_equals(progname, prog_abagnale)) {
@@ -101,7 +100,7 @@ Index: main.c
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -337,6 +349,9 @@ int main(int argc, char *argv[]) {
+@@ -337,6 +350,9 @@ int main(int argc, char *argv[]) {
    time_destroy();
    string_destroy();
    proc_destroy();
