@@ -13,8 +13,8 @@ Index: main.c
  bool ticker_exporter;
  bool verbose;
  
-+bool deamonize;
-+bool deamonized;
++bool daemonize;
++bool daemonized;
 +
  struct Array *restrict exchanges;
  struct Array *restrict algorithms;
