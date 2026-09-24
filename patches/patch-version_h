@@ -5,7 +5,7 @@ Index: version.h
  #ifndef VERSION_H
  #define VERSION_H
  
--#define ABAG_REVISION "$Abagnale: v0/9744 2026-09-23 07:48:24Z $"
-+#define ABAG_REVISION "Abagnale: v0/9744 2026-09-23 07:48:24Z; OpenBSD ${OSREV}/${ARCH} ${FULLPKGNAME} ${BUILD_HOST} ${BUILD_DATE};"
+-#define ABAG_REVISION "$Abagnale: v0/9745 2026-09-24 06:13:07Z $"
++#define ABAG_REVISION "Abagnale: v0/9745 2026-09-24 06:13:07Z; OpenBSD ${OSREV}/${ARCH} ${FULLPKGNAME} ${BUILD_HOST} ${BUILD_DATE};"
  
  #endif
