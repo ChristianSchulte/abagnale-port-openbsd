@@ -1,7 +1,7 @@
 Index: main.c
 --- main.c.orig
 +++ main.c
-@@ -36,6 +36,7 @@
+@@ -37,6 +37,7 @@
  #include <signal.h>
  #include <stdlib.h>
  #include <string.h>
@@ -9,7 +9,7 @@ Index: main.c
  
  #define OPTPARSE_IMPLEMENTATION
  #include "optparse.h"
-@@ -95,20 +96,21 @@ struct String *restrict process_id;
+@@ -96,20 +97,21 @@ struct String *restrict process_id;
  bool ticker_exporter;
  bool verbose;
  
@@ -35,7 +35,7 @@ Index: main.c
         String_chars(progname));
  
    exit(EXIT_FAILURE);
-@@ -119,6 +121,8 @@ int main(int argc, char *argv[]) {
+@@ -120,6 +122,8 @@ int main(int argc, char *argv[]) {
    char *plotsdir = NULL;
    ticker_exporter = true;
    verbose = false;
@@ -44,7 +44,7 @@ Index: main.c
    struct timespec ts;
    struct optparse options = {0};
    void *const *restrict items;
-@@ -168,12 +172,15 @@ int main(int argc, char *argv[]) {
+@@ -170,12 +174,15 @@ int main(int argc, char *argv[]) {
    optparse_init(&options, argv);
    options.permute = 0;
  
@@ -61,7 +61,7 @@ Index: main.c
      case 'f':
        conffile = options.optarg;
        break;
-@@ -209,11 +216,6 @@ int main(int argc, char *argv[]) {
+@@ -211,11 +218,6 @@ int main(int argc, char *argv[]) {
    if (configtest)
      verbose = false;
  
@@ -73,7 +73,7 @@ Index: main.c
    prog_abagnale = String_cnew(ABAGNALE);
    prog_abagnalectl = String_cnew(ABAGNALECTL);
    zero = Numeric_from_int(0);
-@@ -262,6 +264,16 @@ int main(int argc, char *argv[]) {
+@@ -264,6 +266,16 @@ int main(int argc, char *argv[]) {
  
    Array_compact(volatility_windows);
  
@@ -90,7 +90,7 @@ Index: main.c
    http_init();
    json_init();
    abagnale_init();
-@@ -318,7 +330,8 @@ int main(int argc, char *argv[]) {
+@@ -320,7 +332,8 @@ int main(int argc, char *argv[]) {
  
    if (!configtest) {
      if (String_equals(progname, prog_abagnale)) {
@@ -100,8 +100,8 @@ Index: main.c
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -340,6 +353,9 @@ int main(int argc, char *argv[]) {
-   time_destroy();
+@@ -343,6 +356,9 @@ int main(int argc, char *argv[]) {
+   thread_destroy();
    string_destroy();
    proc_destroy();
 +
