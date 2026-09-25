@@ -100,13 +100,3 @@ Index: main.c
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -343,6 +356,9 @@ int main(int argc, char *argv[]) {
-   thread_destroy();
-   string_destroy();
-   proc_destroy();
-+
-+  if (daemonized)
-+    closelog();
- 
-   Array_delete(algorithms, NULL);
-   Array_delete(exchanges, NULL);
