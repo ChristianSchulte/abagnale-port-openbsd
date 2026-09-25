@@ -1,11 +1,11 @@
 COMMENT	=	algorithmic trading system
 
-V	=	0.9757
+V	=	0.9758
 REVISION	=	1
 PKGNAME	=	abagnale-${V}
 CATEGORIES	= localhost
-DIST_TUPLE	+=	github jDTAUS Abagnale v0/9757 .
-WRKDIST	=	${WRKDIR}/Abagnale-0-9757
+DIST_TUPLE	+=	github jDTAUS Abagnale v0/9758 .
+WRKDIST	=	${WRKDIR}/Abagnale-0-9758
 HOMEPAGE	=	https://github.com/jDTAUS/Abagnale
 MAINTAINER	=	Christian Schulte <cs@schulte.it>
 PERMIT_PACKAGE =	Yes
