@@ -49,7 +49,7 @@ Index: main.c
    options.permute = 0;
  
 -  while ((c = optparse(&options, "D:f:I:i:p:vn")) != -1) {
-+  while ((c = optparse(&options, "Dd:df:I:i:p:vn")) != -1) {
++  while ((c = optparse(&options, "D:df:I:i:p:vn")) != -1) {
      switch (c) {
      case 'D':
        if (config_symset(options.optarg) < 0)
