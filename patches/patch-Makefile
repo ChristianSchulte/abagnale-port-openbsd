@@ -10,3 +10,20 @@ Index: Makefile
  #CONFIG+=-DDEFAULT_CDP_REST_URI=\"https://api.coinbase.com\"
  #CONFIG+=-DDEFAULT_CDP_WS_URI=\"wss://advanced-trade-ws.coinbase.com\"
  #CONFIG+=-DDEFAULT_CDP_ACCOUNT_PATH=\"/api/v3/brokerage/accounts/\"
+@@ -85,7 +85,7 @@ PROFILE=
+ LTO=
+ LTO+=-flto=auto
+ 
+-STANDARD=-std=c2x
++STANDARD=-std=c23
+ 
+ WARNINGS=-Wall
+ WARNINGS+=-Werror
+@@ -100,6 +100,7 @@ WARNINGS+=-Wformat-truncation
+ WARNINGS+=-Wuninitialized
+ WARNINGS+=-Wshadow
+ #WARNINGS+=-Wcast-qual
++WARNINGS+=-Wno-keyword-macro
+ 
+ CFLAGS=$(INCLUDES) $(DEBUG) $(PROFILE) $(LTO) $(CONFIG) $(WARNINGS)
+ CFLAGS+=-DMULTI_THREADED
