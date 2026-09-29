@@ -1,29 +1,12 @@
 Index: Makefile
 --- Makefile.orig
 +++ Makefile
-@@ -85,7 +85,7 @@ PROFILE=
- LTO=
- LTO+=-flto=auto
- 
--STANDARD=-std=c2x
-+STANDARD=-std=c23
- 
- WARNINGS=-Wall
- WARNINGS+=-Werror
-@@ -100,6 +100,7 @@ WARNINGS+=-Wformat-truncation
- WARNINGS+=-Wuninitialized
- WARNINGS+=-Wshadow
- #WARNINGS+=-Wcast-qual
-+WARNINGS+=-Wno-keyword-macro
- 
- CFLAGS=$(INCLUDES) $(DEBUG) $(PROFILE) $(LTO) $(CONFIG) $(WARNINGS)
- CFLAGS+=-DMULTI_THREADED
-@@ -149,7 +150,7 @@ LDFLAGS+=-lecpg
- LDFLAGS+=-lpgtypes
- 
- LDFLAGS+=-lm
--#LDFLAGS+=-lstdthreads
-+LDFLAGS+=-lstdthreads
- #LDFLAGS+=-lpthread
- 
- YACCFLAGS=
+@@ -52,7 +52,7 @@ CONFIG=
+ #CONFIG+=-DDEFAULT_ABAG_DATABASE_TARGET=\"ABAGNALE\"
+ #CONFIG+=-DDEFAULT_ABAG_DATABASE_USER=\"abagnale\"
+ #CONFIG+=-DDEFAULT_ABAG_HTTP_TIMEOUT_MILLIS=60000L
+-#CONFIG+=-DDEFAULT_ABAG_THREAD_TIMEOUT_MILLIS=100
++CONFIG+=-DDEFAULT_ABAG_THREAD_TIMEOUT_MILLIS=2000
+ #CONFIG+=-DDEFAULT_CDP_REST_URI=\"https://api.coinbase.com\"
+ #CONFIG+=-DDEFAULT_CDP_WS_URI=\"wss://advanced-trade-ws.coinbase.com\"
+ #CONFIG+=-DDEFAULT_CDP_ACCOUNT_PATH=\"/api/v3/brokerage/accounts/\"
