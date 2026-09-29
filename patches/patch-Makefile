@@ -27,3 +27,12 @@ Index: Makefile
  
  CFLAGS=$(INCLUDES) $(DEBUG) $(PROFILE) $(LTO) $(CONFIG) $(WARNINGS)
  CFLAGS+=-DMULTI_THREADED
+@@ -149,7 +150,7 @@ LDFLAGS+=-lecpg
+ LDFLAGS+=-lpgtypes
+ 
+ LDFLAGS+=-lm
+-#LDFLAGS+=-lstdthreads
++LDFLAGS+=-lstdthreads
+ #LDFLAGS+=-lpthread
+ 
+ YACCFLAGS=
