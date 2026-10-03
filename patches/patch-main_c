@@ -9,9 +9,9 @@ Index: main.c
  
  #define OPTPARSE_IMPLEMENTATION
  #include "optparse.h"
-@@ -96,20 +97,21 @@ struct String *restrict process_id;
- bool ticker_exporter;
+@@ -101,20 +102,21 @@ bool ticker_exporter;
  bool verbose;
+ struct timespec thread_timeout;
  
 +bool daemonize;
 +bool daemonized;
@@ -35,7 +35,7 @@ Index: main.c
         String_chars(progname));
  
    exit(EXIT_FAILURE);
-@@ -120,6 +122,8 @@ int main(int argc, char *argv[]) {
+@@ -125,6 +127,8 @@ int main(int argc, char *argv[]) {
    char *plotsdir = NULL;
    ticker_exporter = true;
    verbose = false;
@@ -44,7 +44,7 @@ Index: main.c
    struct timespec ts;
    struct optparse options = {0};
    void *const *restrict items;
-@@ -170,12 +174,15 @@ int main(int argc, char *argv[]) {
+@@ -180,12 +184,15 @@ int main(int argc, char *argv[]) {
    optparse_init(&options, argv);
    options.permute = 0;
  
@@ -61,19 +61,20 @@ Index: main.c
      case 'f':
        conffile = options.optarg;
        break;
-@@ -211,11 +218,6 @@ int main(int argc, char *argv[]) {
+@@ -221,12 +228,6 @@ int main(int argc, char *argv[]) {
    if (configtest)
      verbose = false;
  
 -  if (verbose) {
 -    wout("%s\n", ABAG_REVISION);
 -    wout("\tABAG_CONFIG_FILE=%s\n", conffile);
+-    wout("\tABAG_THREAD_TIMEOUT_MILLIS=%lu\n", thread_timeout_millis);
 -  }
 -
    prog_abagnale = String_cnew(ABAGNALE);
    prog_abagnalectl = String_cnew(ABAGNALECTL);
    zero = Numeric_from_int(0);
-@@ -264,6 +266,16 @@ int main(int argc, char *argv[]) {
+@@ -275,6 +276,17 @@ int main(int argc, char *argv[]) {
  
    Array_compact(volatility_windows);
  
@@ -85,12 +86,13 @@ Index: main.c
 +  if (verbose) {
 +    wout("%s\n", ABAG_REVISION);
 +    wout("\tABAG_CONFIG_FILE=%s\n", conffile);
++    wout("\tABAG_THREAD_TIMEOUT_MILLIS=%lu\n", thread_timeout_millis);
 +  }
 +
    http_init();
    json_init();
    abagnale_init();
-@@ -320,7 +332,8 @@ int main(int argc, char *argv[]) {
+@@ -331,7 +343,8 @@ int main(int argc, char *argv[]) {
  
    if (!configtest) {
      if (String_equals(progname, prog_abagnale)) {
@@ -100,7 +102,7 @@ Index: main.c
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -371,6 +384,9 @@ int main(int argc, char *argv[]) {
+@@ -382,6 +395,9 @@ int main(int argc, char *argv[]) {
    string_destroy();
    proc_destroy();
    thread_destroy();
