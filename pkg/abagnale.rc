@@ -4,7 +4,7 @@ daemon="${TRUEPREFIX}/bin/abagnale"
 daemon_user="_abagnale"
 daemon_flags="-v -p /var/abagnale/plots"
 daemon_timeout=300
-daemon_dir="/var/abagnale"
+daemon_execdir="/var/abagnale"
 
 . /etc/rc.d/rc.subr
 
