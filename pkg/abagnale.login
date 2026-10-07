@@ -32,6 +32,7 @@
 #BITVAVO_WS_RETRY_SECONDS=3
 
 abagnale:\
+  :datasize=6G:\
 	:openfiles=2048:\
 	:setenv=LC_CTYPE=C.UTF-8:\
 	:umask=0027:\
