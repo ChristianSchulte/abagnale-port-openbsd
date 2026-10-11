@@ -1,5 +1,5 @@
-#PGPASSFILE=/etc/abagnale/abagnale.pgpass
-#PGSERVICEFILE=/etc/abagnale/abagnale.pgservice
+#PGPASSFILE=~/.pgpass
+#PGSERVICEFILE=~/.pgservice
 #ABAG_CONFIG_FILE=/etc/abagnale/abagnale.conf
 #ABAG_DATABASE_TARGET=ABAGNALE
 #ABAG_DATABASE_USER=abagnale
@@ -32,8 +32,7 @@
 #BITVAVO_WS_RETRY_SECONDS=3
 
 abagnale:\
-	:datasize=8G:\
-	:openfiles=2048:\
+	:openfiles=1024:\
 	:setenv=LC_CTYPE=C.UTF-8:\
 	:umask=0027:\
 	:tc=daemon:
