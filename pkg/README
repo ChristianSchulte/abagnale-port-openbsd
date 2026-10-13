@@ -39,7 +39,7 @@ support such a number of connections.
 The postgresql login class /etc/login.conf.d/postgresql by default limits
 :datasize=8192M:. The default server configuration postgresql.conf imposes
 further limits. Those limits need to be increased in relation to the datasize
-limit to stop the server from writing large temporary files.
+limit to stop the server from swapping gigabytes to temporary files.
 
 	shared_buffers = 4GB
 	temp_buffers = 32MB
