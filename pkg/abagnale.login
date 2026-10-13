@@ -32,7 +32,7 @@
 #BITVAVO_WS_RETRY_SECONDS=3
 
 abagnale:\
-	:openfiles=1024:\
+	:openfiles=8192:\
 	:setenv=LC_CTYPE=C.UTF-8:\
 	:umask=0027:\
 	:tc=daemon:

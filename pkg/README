@@ -24,6 +24,28 @@ The service then can be enabled and started by issueing:
 	# rcctl enable ${PKGSTEM}
 	# rcctl start ${PKGSTEM}
 
+You will need to update various options in the PostgreSQL configuration file
+postgresql.conf to match the application's requirements. As of this writing the
+implemented exchanges provide a maximum of 1363 markets. The application may
+create four times this number of threads and database connections (tickers,
+orders, volatility calculations and plotting).
+
+	max_connections = 6144
+
+You will need to increase the file descriptor limit of the postgresql login
+class /etc/login.conf.d/postgresql by adding :openfiles=8192: to make the server
+support such a number of connections.
+
+The postgresql login class /etc/login.conf.d/postgresql by default limits
+:datasize=8192M:. The default server configuration postgresql.conf imposes
+further limits. Those limits need to be increased in relation to the datasize
+limit to stop the server from writing large temporary files.
+
+	shared_buffers = 4GB
+	temp_buffers = 32MB
+	work_mem = 32MB
+	maintenance_work_mem = 4GB
+
 Maintenance
 ===========
 
