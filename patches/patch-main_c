@@ -9,7 +9,7 @@ Index: main.c
  
  #define OPTPARSE_IMPLEMENTATION
  #include "optparse.h"
-@@ -101,20 +102,21 @@ bool ticker_exporter;
+@@ -101,6 +102,9 @@ bool ticker_exporter;
  bool verbose;
  struct timespec thread_timeout;
  
@@ -19,12 +19,7 @@ Index: main.c
  struct Array *restrict exchanges;
  struct Array *restrict algorithms;
  struct Array *restrict volatility_windows;
- 
--extern bool proc_prefix_systemd;
--
- int abagnale(int argc, char *argv[]);
- int abagnalectl(int argc, char *argv[]);
- 
+@@ -111,8 +115,8 @@ int abagnalectl(int argc, char *argv[]);
  static void terminate(int signum) { terminated = 1; }
  
  static _Noreturn void usage(void) {
@@ -35,7 +30,7 @@ Index: main.c
         String_chars(progname));
  
    exit(EXIT_FAILURE);
-@@ -125,6 +127,8 @@ int main(int argc, char *argv[]) {
+@@ -123,6 +127,8 @@ int main(int argc, char *argv[]) {
    char *plotsdir = NULL;
    ticker_exporter = true;
    verbose = false;
@@ -44,7 +39,7 @@ Index: main.c
    struct timespec ts;
    struct optparse options = {0};
    void *const *restrict items;
-@@ -180,12 +184,15 @@ int main(int argc, char *argv[]) {
+@@ -178,12 +184,15 @@ int main(int argc, char *argv[]) {
    optparse_init(&options, argv);
    options.permute = 0;
  
@@ -61,7 +56,7 @@ Index: main.c
      case 'f':
        conffile = options.optarg;
        break;
-@@ -221,12 +228,6 @@ int main(int argc, char *argv[]) {
+@@ -219,12 +228,6 @@ int main(int argc, char *argv[]) {
    if (configtest)
      verbose = false;
  
@@ -74,7 +69,7 @@ Index: main.c
    prog_abagnale = String_cnew(ABAGNALE);
    prog_abagnalectl = String_cnew(ABAGNALECTL);
    zero = Numeric_from_int(0);
-@@ -275,6 +276,17 @@ int main(int argc, char *argv[]) {
+@@ -273,6 +276,17 @@ int main(int argc, char *argv[]) {
  
    Array_compact(volatility_windows);
  
@@ -92,17 +87,16 @@ Index: main.c
    http_init();
    json_init();
    abagnale_init();
-@@ -331,7 +343,8 @@ int main(int argc, char *argv[]) {
+@@ -329,6 +343,8 @@ int main(int argc, char *argv[]) {
  
    if (!configtest) {
      if (String_equals(progname, prog_abagnale)) {
--      proc_prefix_systemd = true;
 +      if (daemonized && daemon(0, 0) == -1)
 +        fatal("%s", strerror(errno));
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(progname, prog_abagnalectl)) {
        r = abagnalectl(argc - options.optind, argv);
-@@ -382,6 +395,9 @@ int main(int argc, char *argv[]) {
+@@ -379,6 +395,9 @@ int main(int argc, char *argv[]) {
    string_destroy();
    proc_destroy();
    thread_destroy();
