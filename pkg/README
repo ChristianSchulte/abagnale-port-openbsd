@@ -57,8 +57,8 @@ can be flushed before performing database host maintenance.
 	# rcctl stop ${PKGSTEM}
 
 In case a clean stop of the application is not practical, e.g. due to
-unattended security updates of the database host, automatic restarts need to be
-setup manually by adding a cronjob to root's crontab like:
+unattended security updates of a remote database host, automatic restarts need
+to be setup manually by adding a cronjob to root's crontab like:
 
 	# crontab -e
 	~ * * * * rcctl -q check abagnale || rcctl -q restart abagnale
