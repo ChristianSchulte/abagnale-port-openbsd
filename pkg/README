@@ -101,8 +101,9 @@ database.
 Example
 =======
 
-Database Host: Does not perform any trading and is just used to populate the
-SAMPLES table with tickers. It's configuration therefore only contains exchange
+Database Host: db.example.net
+Does not perform any trading and is just used to populate the SAMPLES table
+with tickers. It's configuration therefore only contains exchange
 configurations with no trade statements. This host also runs the daily
 maintenance. Without specifying an -i command line option the process uses a
 hard coded default process UUID.
@@ -115,11 +116,12 @@ hard coded default process UUID.
 	exchange bitvavo api-key 9b1...
 	exchange bitvavo api-secret 313...
 
-Trading Host A: Initializes with tickers from the database. Reads tickers from
-the Coinbase exchange. Does not write tickers to the database. Trades
-everything Bitcoin at the Coinbase exchange.
+Trading Host A: th-a.example.net
+Initializes with tickers from the database. Reads tickers from the Coinbase
+exchange. Does not write tickers to the database. Trades everything Bitcoin
+at the Coinbase exchange.
 
-	$ cat /etc/abagnale/abagnale.conf
+	$ cat /etc/abagnale/th-a.example.net.conf
 	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
 	dns-v4 udp://127.0.0.1:53
 	dns-v6 udp://::1:53
@@ -138,16 +140,17 @@ everything Bitcoin at the Coinbase exchange.
 		take-loss-delay 18h take-loss-delays 1
 
 	# rcctl set abagnale flags \
-		"-v -p /var/abagnale/plots \
+		"-f /etc/abagnale/th-a.example.net.conf -v -p /var/abagnale/plots \
 			-I SAMPLES -i 98430c6b-4cf0-46c5-8d02-41dd7e93a481"
 
 	# rcctl restart abagnale
 
-Trading Host B: Initializes with tickers from the database. Reads tickers from
-the Bitvavo exchange. Does not write tickers to the database. Trades
-everything Euro at the Bitvavo exchange.
+Trading Host B: th-b.example.net
+Initializes with tickers from the database. Reads tickers from the Bitvavo
+exchange. Does not write tickers to the database. Trades everything Euro at
+the Bitvavo exchange.
 
-	$ cat /etc/abagnale/abagnale.conf
+	$ cat /etc/abagnale/th-b.example.net.conf
 	database target tcp:postgresql://database.fqdn/ABAGNALE user abagnale
 	dns-v4 udp://127.0.0.1:53
 	dns-v6 udp://::1:53
@@ -166,7 +169,7 @@ everything Euro at the Bitvavo exchange.
 		take-loss-delay 18h take-loss-delays 1
 
 	# rcctl set abagnale flags \
-		"-v -p /var/abagnale/plots \
+		"-f /etc/abagnale/th-b.example.net -v -p /var/abagnale/plots \
 			-I SAMPLES -i de6924a0-1a23-4680-8780-175d0e345f75"
 
 	# rcctl restart abagnale
