@@ -61,7 +61,7 @@ unattended security updates of a remote database host, automatic restarts need
 to be setup manually by adding a cronjob to root's crontab like:
 
 	# crontab -e
-	~ * * * * rcctl -q check abagnale || rcctl -q restart abagnale
+	~/5 * * * * rcctl -q check abagnale || rcctl -q restart abagnale
 
 The database should be vacuumed periodically by running abagnalectl vacuum.
 To vacuum the database and to create backups of outdated data removed by
