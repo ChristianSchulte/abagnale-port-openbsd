@@ -11,12 +11,12 @@ Database Preparation
 The database schema will transfer all ownership to the abagnale database role.
 That role must be created before creating the database.
 
-	# su - _postgresql
+	$ doas -su _postgresql
 	$ echo "CREATE ROLE abagnale;" | psql -U postgres
 
 Create the database by loading the SQL dump:
 
-	# su - _postgresql
+	$ doas -su _postgresql
 	$ psql -U postgres -f /usr/local/share/abagnale/database-postgresql.sql
 
 The service then can be enabled and started by issueing:
@@ -80,7 +80,7 @@ vacuum a script like the following may be added to /etc/daily.local.
 To be able to use the -b command option of the vacuum command the role used
 to perform that command needs to be granted pg_write_server_files.
 
-	# su - _postgresql
+	$ doas -su _postgresql
 	$ echo "GRANT pg_write_server_files TO abagnale \
 		INHERIT TRUE, SET TRUE;" | psql -U postgres
 
@@ -97,7 +97,7 @@ database.
 Example
 =======
 
-	# doas -u _abagnale sh
+	$ doas -su _abagnale
 	$ echo "SELECT gen_random_uuid();" \
 		| psql -h db.example.net -U abagnale ABAGNALE
 
