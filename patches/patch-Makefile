@@ -18,12 +18,21 @@ Index: Makefile
  
  CFLAGS=$(INCLUDES) $(DEBUG) $(PROFILE) $(LTO) $(CONFIG) $(WARNINGS)
  CFLAGS+=-DMULTI_THREADED
-@@ -150,7 +151,7 @@ LDFLAGS+=-lecpg
+@@ -150,8 +151,16 @@ LDFLAGS+=-lecpg
  LDFLAGS+=-lpgtypes
  
  LDFLAGS+=-lm
 -#LDFLAGS+=-lstdthreads
 +LDFLAGS+=-lstdthreads
++
++#LDFLAGS+=-static
++#LDFLAGS+=-lpq
++#LDFLAGS+=-lpgcommon_shlib
++#LDFLAGS+=-lpgport_shlib
++#LDFLAGS+=-lpgfeutils
  #LDFLAGS+=-lpthread
++#LDFLAGS+=-lcrypto
++#LDFLAGS+=-lssl
  
  YACCFLAGS=
+ YACCFLAGS+=-o
