@@ -15,7 +15,7 @@
 #CDP_ORDER_CANCEL_PATH=/api/v3/brokerage/orders/batch_cancel
 #CDP_ORDER_CREATE_PATH=/api/v3/brokerage/orders
 #CDP_PRODUCTS_PATH=/api/v3/brokerage/products
-#CDP_HTTP_REQUESTS_PER_SECOND=30
+#CDP_HTTP_REQUESTS_PER_SECOND=3
 #CDP_HTTP_RETRY_SECONDS=3
 #CDP_HTTP_STALL_MILLIS=3600000
 #BITVAVO_REST_URI=https://api.bitvavo.com
