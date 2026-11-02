@@ -19,19 +19,17 @@ Index: main.c
  struct Array *restrict exchanges;
  struct Array *restrict algorithms;
  struct Array *restrict volatility_windows;
-@@ -114,9 +118,9 @@ int abagnalectl(int argc, char *argv[]);
+@@ -114,8 +118,8 @@ int abagnalectl(int argc, char *argv[]);
  static void terminate(int signum) { terminated = 1; }
  
  static _Noreturn void usage(void) {
 -  werr("Usage: %s [-Dmacro=value ... ] [-f config-file] [-I entity] [-i "
 -       "process-uuid] [-n] [-p plots-dir] [-v]\n",
--       String_chars(app_nm));
 +  werr("Usage: %s [-Dmacro=value ... ] [-d] [-f config-file] [-I entity] "
 +       "[-i process-uuid] [-n] [-p plots-dir] [-v]\n",
-+       String_chars(progname));
+        String_chars(app_nm));
  
    exit(EXIT_FAILURE);
- }
 @@ -126,6 +130,8 @@ int main(int argc, char *argv[]) {
    char *plotsdir = NULL;
    ticker_exporter = true;
@@ -78,10 +76,10 @@ Index: main.c
  
    Array_compact(volatility_windows);
  
-+  daemonized = daemonize && String_equals(progname, prog_abagnale);
++  daemonized = daemonize && String_equals(app_nm, app_abagnale);
 +
 +  if (daemonized)
-+    openlog(String_chars(progname), LOG_PID, verbose ? LOG_INFO : LOG_ERR);
++    openlog(String_chars(app_nm), LOG_PID, verbose ? LOG_INFO : LOG_ERR);
 +
 +  if (verbose) {
 +    wout("%s\n", ABAG_REVISION);
