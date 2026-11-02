@@ -5,11 +5,10 @@ Index: proc.c
  #include <stdbool.h>
  #include <stdio.h>
  #include <string.h>
--
 +#include <syslog.h>
-+ 
+ 
 +extern const bool daemonized;
-+ 
++
  inline void wout(const char *restrict fmt, ...) {
    va_list ap;
  #ifdef MULTI_THREADED
