@@ -95,7 +95,7 @@ Index: main.c
    if (!configtest) {
      if (String_equals(app_nm, app_abagnale)) {
 +      if (daemonized && daemon(0, 0) == -1)
-+        fatal("%s", strerror(errno));
++        fail("%s", strerror(errno));
 +
        r = abagnale(argc - options.optind, argv);
      } else if (String_equals(app_nm, app_abagnalectl)) {
